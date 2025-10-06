@@ -3,7 +3,7 @@ package nro.models.npc_list;
 import nro.models.npc.Npc;
 import nro.models.player.Player;
 import nro.models.services.Service;
-import nro.models.map.service.NpcService;
+import nro.models.shop.ShopService;
 
 /**
  * NPC SGohan - ID: 111
@@ -53,9 +53,7 @@ public class SGohan extends Npc {
                             break;
                             
                         case 2: // Cửa hàng
-                            // TODO: Mở cửa hàng
-                            Service.gI().sendThongBao(player, 
-                                "Chức năng cửa hàng chưa được thêm!");
+                            ShopService.gI().opendShop(player, "BUNMA", true);
                             break;
                             
                         case 3: // Đóng

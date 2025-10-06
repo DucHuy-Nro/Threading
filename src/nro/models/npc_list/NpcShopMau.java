@@ -44,11 +44,13 @@ public class NpcShopMau extends Npc {
                 
                 case 0: // Mở shop
                     // ========================================
-                    // DÙNG SHOP CÓ SẴN (CÁCH 1 - NHANH):
+                    // METHOD ĐÚNG: opendShop() ← có chữ 'd'!
                     // ========================================
                     ShopService.gI().opendShop(player, "BUNMA", true);
-                    //                                  ↑↑↑↑↑↑
-                    // Đổi thành tên shop khác:
+                    //              ↑↑↑↑↑↑↑↑↑
+                    //              Chữ 'd' không phải typo!
+                    
+                    // Các shop có sẵn:
                     // - "BUNMA" = Shop Bulma
                     // - "DENDE" = Shop Dende  
                     // - "APPULE" = Shop Appule
@@ -57,12 +59,8 @@ public class NpcShopMau extends Npc {
                     // - "BILL" = Shop Bill
                     // - "QUY_LAO" = Shop Quy Lão
                     
-                    // ========================================
-                    // HOẶC DÙNG SHOP MỚI TẠO (CÁCH 2):
-                    // ========================================
-                    // ShopService.gI().opendShop(player, "SHOP_SGOHAN", true);
-                    //                                     ↑↑↑↑↑↑↑↑↑↑↑
-                    // Tên shop mới tạo trong database
+                    // Hoặc dùng shop mới tạo:
+                    // ShopService.gI().opendShop(player, "SHOP_MOI", true);
                     break;
                     
                 case 1: // Đóng
