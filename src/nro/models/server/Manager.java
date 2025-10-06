@@ -83,7 +83,7 @@ public final class Manager {
     public static final Map<String, Byte> IMAGES_BY_NAME = new HashMap<>();
     public static final List<ItemTemplate> ITEM_TEMPLATES = new ArrayList<>();
     public static final List<MobTemplate> MOB_TEMPLATES = new ArrayList<>();
-    public static final List<NpcTemplate> NPC_TEMPLATES = new ArrayList<>();
+    public static final Map<Integer, NpcTemplate> NPC_TEMPLATES = new HashMap<>();
     public static final List<TaskMain> TASKS = new ArrayList<>();
     public static final List<SideTaskTemplate> SIDE_TASKS_TEMPLATE = new ArrayList<>();
     public static final List<ClanTaskTemplate> CLAN_TASKS_TEMPLATE = new ArrayList<>();
@@ -740,7 +740,7 @@ public final class Manager {
                 npcTemp.body = rs.getShort("body");
                 npcTemp.leg = rs.getShort("leg");
                 npcTemp.avatar = rs.getInt("avatar");
-                NPC_TEMPLATES.add(npcTemp);
+                NPC_TEMPLATES.put((int) npcTemp.id, npcTemp);
             }
             Logger.success(Logger.RED + "Successfully loaded npc template (" + NPC_TEMPLATES.size() + ")\n");
             ps = ConnectionDatabase.prepareStatement("select * from data_badges");

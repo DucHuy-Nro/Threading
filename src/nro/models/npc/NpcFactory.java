@@ -92,6 +92,7 @@ import nro.models.npc_list.DrMyuu;
 import nro.models.npc_list.DuaHau;
 import nro.models.npc_list.RuongSuuTam;
 import nro.models.npc_list.ToriBot;
+import nro.models.npc_list.SGohan;
 import nro.models.services.shenron.SummonDragon;
 import static nro.models.services.shenron.SummonDragon.SHENRON_1_STAR_WISHES_1;
 import static nro.models.services.shenron.SummonDragon.SHENRON_1_STAR_WISHES_2;
@@ -235,6 +236,8 @@ public class NpcFactory {
                     new Bardock(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BERRY ->
                     new Berry(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.SGOHAN ->
+                    new SGohan(mapId, status, cx, cy, tempId, avatar);
                 default ->
                     new Npc(mapId, status, cx, cy, tempId, avatar) {
                         @Override
