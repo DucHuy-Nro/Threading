@@ -83,7 +83,7 @@ public final class Manager {
     public static final Map<String, Byte> IMAGES_BY_NAME = new HashMap<>();
     public static final List<ItemTemplate> ITEM_TEMPLATES = new ArrayList<>();
     public static final List<MobTemplate> MOB_TEMPLATES = new ArrayList<>();
-    public static final Map<Integer, NpcTemplate> NPC_TEMPLATES = new HashMap<>();
+    public static final Map<Integer, NpcTemplate> NPC_TEMPLATES = new LinkedHashMap<>();
     public static final List<TaskMain> TASKS = new ArrayList<>();
     public static final List<SideTaskTemplate> SIDE_TASKS_TEMPLATE = new ArrayList<>();
     public static final List<ClanTaskTemplate> CLAN_TASKS_TEMPLATE = new ArrayList<>();
