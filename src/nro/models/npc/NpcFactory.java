@@ -105,7 +105,19 @@ public class NpcFactory {
     public static final java.util.Map<Long, Object> PLAYERID_OBJECT = new HashMap<>();
 
     public static Npc createNPC(int mapId, int status, int cx, int cy, int tempId) {
-        int avatar = Manager.NPC_TEMPLATES.get(tempId).avatar;
+        // Kiểm tra index hợp lệ
+        if (tempId < 0 || tempId >= Manager.NPC_TEMPLATES.size()) {
+            Logger.error("NPC template ID không hợp lệ: " + tempId);
+            return null;
+        }
+        
+        NpcTemplate template = Manager.NPC_TEMPLATES.get(tempId);
+        if (template == null) {
+            Logger.error("NPC template không tồn tại: " + tempId);
+            return null;
+        }
+        
+        int avatar = template.avatar;
         try {
             return switch (tempId) {
                 case ConstNpc.GHI_DANH ->
