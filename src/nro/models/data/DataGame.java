@@ -109,7 +109,7 @@ public class DataGame {
                 msg.writer().writeUTF(temp.name);
             }
             msg.writer().writeByte(Manager.NPC_TEMPLATES.size());
-            for (NpcTemplate temp : Manager.NPC_TEMPLATES) {
+            for (NpcTemplate temp : Manager.NPC_TEMPLATES.values()) {
                 msg.writer().writeUTF(temp.name);
                 msg.writer().writeShort(temp.head);
                 msg.writer().writeShort(temp.body);
