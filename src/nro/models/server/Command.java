@@ -204,8 +204,8 @@ public class Command {
             }
         }
 
-        // Command xem tọa độ (cho tất cả player)
-        if (text.equalsIgnoreCase("vt") || text.equalsIgnoreCase("toado")) {
+        // Command xem tọa độ (chỉ admin)
+        if (player.isAdmin() && (text.equalsIgnoreCase("vt") || text.equalsIgnoreCase("toado"))) {
             Service.gI().sendThongBao(player, 
                 "📍 VỊ TRÍ HIỆN TẠI\n"
                 + "━━━━━━━━━━━━━━━━\n"
