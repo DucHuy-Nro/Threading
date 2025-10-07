@@ -28,9 +28,9 @@ public class NgoKhong extends Npc {
     @Override
     public void confirmMenu(Player player, int select) {
         if (canOpenNpc(player)) {
-            if (player.iDMark.isBaseMenu()) {
+            if (player.idMark.isBaseMenu()) {
                 if (select == 0) {
-                    Service.getInstance().sendThongBao(player,
+                    Service.gI().sendThongBao(player,
                         "Thu thập đủ 4 loại bùa:\n"
                         + "- Chữ GIẢI (10 cái)\n"
                         + "- Chữ KHAI (10 cái)\n"
