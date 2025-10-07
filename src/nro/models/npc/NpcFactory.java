@@ -95,6 +95,7 @@ import nro.models.npc_list.ToriBot;
 import nro.models.npc_list.SGohan;
 import nro.models.npc_list.NgoKhong;
 import nro.models.npc_list.DuongTang;
+import nro.models.npc_list.KhuVuc;
 import nro.models.services.shenron.SummonDragon;
 import static nro.models.services.shenron.SummonDragon.SHENRON_1_STAR_WISHES_1;
 import static nro.models.services.shenron.SummonDragon.SHENRON_1_STAR_WISHES_2;
@@ -168,6 +169,8 @@ public class NpcFactory {
                     new DrMyuu(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.DAU_THAN ->
                     new DauThan(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.KHU_VUC ->
+                    new KhuVuc(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.CALICK ->
                     new Calick(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.JACO ->
