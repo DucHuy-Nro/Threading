@@ -44,7 +44,7 @@ public class AutoMaintenance extends Thread {
                         announceStartTime = System.currentTimeMillis();
                         hasAnnounced = true;
                         hasResetAfterMaintenance = false; // Reset lại flag reset khi bắt đầu lại
-                        Logger.log(Logger.PURPLE, "Bắt đầu đếm ngược bảo trì (5 phút)");
+                        // Logger.log(Logger.PURPLE, "Bắt đầu đếm ngược bảo trì (5 phút)"); // Đã tắt
                     }
 
                     if (hasAnnounced) {
@@ -61,13 +61,13 @@ public class AutoMaintenance extends Thread {
                             Service.gI().sendThongBaoAllPlayer(
                                     String.format("Máy chủ sẽ bảo trì trong %d phút %d giây nữa. Vui lòng thoát game để tránh mất dữ liệu.",
                                             minutesLeft, secondsLeft));
-                            Logger.log(Logger.PURPLE, "Thông báo bảo trì tự động đã gửi.");
+                            // Logger.log(Logger.PURPLE, "Thông báo bảo trì tự động đã gửi."); // Đã tắt
                             lastAnnouncementTime = System.currentTimeMillis();
                         }
 
                         if (elapsed >= totalWait) {
                             if (!Maintenance.isRunning && !isRunning) {
-                                Logger.log(Logger.PURPLE, "Đang tiến hành quá trình bảo trì tự động...");
+                                // Logger.log(Logger.PURPLE, "Đang tiến hành quá trình bảo trì tự động..."); // Đã tắt
                                 Maintenance.gI().startCountdown();
                                 isRunning = true;
                                 AutoMaintenance = false;
@@ -81,7 +81,7 @@ public class AutoMaintenance extends Thread {
                         lastAnnouncementTime = 0;
                         isRunning = false;
                         hasResetAfterMaintenance = true; // Đánh dấu đã reset
-                        Logger.log(Logger.PURPLE, "Reset AutoMaintenance sau thời gian bảo trì.\n");
+                        // Logger.log(Logger.PURPLE, "Reset AutoMaintenance sau thời gian bảo trì.\n"); // Đã tắt
                     }
                 }
 

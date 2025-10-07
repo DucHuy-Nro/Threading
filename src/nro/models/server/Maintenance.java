@@ -51,7 +51,7 @@ public class Maintenance extends Thread {
 
     @Override
     public void run() {
-        Logger.log(Logger.YELLOW, "Bắt đầu đếm ngược 60s bảo trì");
+        // Logger.log(Logger.YELLOW, "Bắt đầu đếm ngược 60s bảo trì"); // Đã tắt
 
         while (timeInSeconds > 0) {
             try {
@@ -70,6 +70,6 @@ public class Maintenance extends Thread {
     private void sendRemainingTime() {
         String msg = "Hệ thống sẽ bảo trì sau " + timeInSeconds + " giây nữa. Hãy thoát game để tránh mất dữ liệu.";
         Service.gI().sendThongBaoAllPlayer(msg);
-        Logger.log(Logger.YELLOW, msg);
+        // Logger.log(Logger.YELLOW, msg); // Đã tắt log console
     }
 }
