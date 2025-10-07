@@ -7,7 +7,6 @@ import nro.models.services.Service;
 
 /**
  * NPC Ngộ Không - Ngũ Hành Sơn
- * @author NRO
  */
 public class NgoKhong extends Npc {
 
@@ -30,16 +29,14 @@ public class NgoKhong extends Npc {
     public void confirmMenu(Player player, int select) {
         if (canOpenNpc(player)) {
             if (player.iDMark.isBaseMenu()) {
-                switch (select) {
-                    case 0: // Hướng dẫn
-                        Service.getInstance().sendThongBao(player,
-                            "Thu thập đủ 4 loại bùa:\n"
-                            + "- Chữ GIẢI (10 cái)\n"
-                            + "- Chữ KHAI (10 cái)\n"
-                            + "- Chữ PHONG (10 cái)\n"
-                            + "- Chữ ẤN (10 cái)\n"
-                            + "Sau đó mang đến gặp Đường Tăng!");
-                        break;
+                if (select == 0) {
+                    Service.getInstance().sendThongBao(player,
+                        "Thu thập đủ 4 loại bùa:\n"
+                        + "- Chữ GIẢI (10 cái)\n"
+                        + "- Chữ KHAI (10 cái)\n"
+                        + "- Chữ PHONG (10 cái)\n"
+                        + "- Chữ ẤN (10 cái)\n"
+                        + "Sau đó mang đến gặp Đường Tăng!");
                 }
             }
         }
