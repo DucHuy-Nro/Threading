@@ -730,17 +730,29 @@ public final class Manager {
             Logger.success(Logger.PURPLE + "Successfully loaded mob template (" + MOB_TEMPLATES.size() + ")\n");
 
             //load npc template
+            // Tạo ArrayList với size cố định 150 (có thể tăng nếu cần)
+            for (int i = 0; i < 150; i++) {
+                NPC_TEMPLATES.add(null); // Khởi tạo với null
+            }
+            
             ps = ConnectionDatabase.prepareStatement("select * from npc_template");
             rs = ps.executeQuery();
             while (rs.next()) {
                 NpcTemplate npcTemp = new NpcTemplate();
-                npcTemp.id = rs.getByte("id");
+                int npcId = rs.getByte("id") & 0xFF; // Chuyển byte sang int (0-255)
+                npcTemp.id = (byte) npcId;
                 npcTemp.name = rs.getString("name");
                 npcTemp.head = rs.getShort("head");
                 npcTemp.body = rs.getShort("body");
                 npcTemp.leg = rs.getShort("leg");
                 npcTemp.avatar = rs.getInt("avatar");
-                NPC_TEMPLATES.add(npcTemp);
+                
+                // Đặt NPC vào đúng index theo ID
+                if (npcId < 150) {
+                    NPC_TEMPLATES.set(npcId, npcTemp);
+                } else {
+                    Logger.error("NPC ID quá lớn: " + npcId + " (max: 149)");
+                }
             }
             Logger.success(Logger.RED + "Successfully loaded npc template (" + NPC_TEMPLATES.size() + ")\n");
             ps = ConnectionDatabase.prepareStatement("select * from data_badges");
