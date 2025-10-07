@@ -294,8 +294,36 @@ public class ServerManager {
     private static void activeCommandLine() {
         Scanner sc = new Scanner(System.in);
         while (true) {
-            String line = sc.nextLine();
+            showAdminMenu();
+            String line = sc.nextLine().trim();
+            
             switch (line) {
+                case "1": // Bảo trì 20s
+                    startMaintenance20s(sc);
+                    break;
+                    
+                case "2": // Đá all player
+                    kickAllPlayers(sc);
+                    break;
+                    
+                case "3": // Thay đổi EXP
+                    changeExpRate(sc);
+                    break;
+                    
+                case "4": // Thông tin server
+                    showServerInfo(sc);
+                    break;
+                    
+                case "5": // Bảo trì ngay (lệnh cũ)
+                    Maintenance.gI().startSeconds(5);
+                    break;
+                    
+                case "0": // Thoát
+                    System.out.println("\n[!] Đang thoát...");
+                    System.exit(0);
+                    break;
+                    
+                // Lệnh text cũ (backward compatible)
                 case "bt":
                     Maintenance.gI().startSeconds(5);
                     break;
@@ -308,20 +336,174 @@ public class ServerManager {
                     System.out.println("Đã tắt chế độ bảo trì tự động.");
                     break;
                 case "run":
-                try {
-                    ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "run.bat");
-                    pb.inheritIO();
-                    pb.start();
-                    System.out.println("Đã chạy run.bat");
-                } catch (IOException e) {
-                    System.out.println("Lỗi khi chạy run.bat: " + e.getMessage());
-                }
-                break;
+                    try {
+                        ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "run.bat");
+                        pb.inheritIO();
+                        pb.start();
+                        System.out.println("Đã chạy run.bat");
+                    } catch (IOException e) {
+                        System.out.println("Lỗi khi chạy run.bat: " + e.getMessage());
+                    }
+                    break;
+                    
+                case "menu":
+                case "help":
+                case "":
+                    // Hiện lại menu
+                    break;
+                    
                 default:
-                    System.out.println("Lệnh không hợp lệ.");
+                    System.out.println("[!] Lệnh không hợp lệ! Nhập 'menu' để xem lại.");
                     break;
             }
         }
+    }
+    
+    // ========================================================
+    // HIỂN THỊ MENU ADMIN
+    // ========================================================
+    private static void showAdminMenu() {
+        System.out.println("\n╔════════════════════════════════════════════════╗");
+        System.out.println("║         🔧 ADMIN PANEL - NRO SERVER 🔧        ║");
+        System.out.println("╠════════════════════════════════════════════════╣");
+        System.out.println("║  Server: " + NAME + "                         ");
+        System.out.println("║  EXP Rate: x" + Manager.RATE_EXP_SERVER + "                                  ");
+        System.out.println("║  Players Online: " + Client.gI().getPlayers().size() + "/" + Manager.MAX_PLAYER + "                        ");
+        System.out.println("╠════════════════════════════════════════════════╣");
+        System.out.println("║  [1] ⏰ Bảo trì 20s (Countdown)               ║");
+        System.out.println("║  [2] 👢 Đá all player (Ngay lập tức)          ║");
+        System.out.println("║  [3] ⭐ Thay đổi EXP Server                    ║");
+        System.out.println("║  [4] 📊 Thông tin Server                       ║");
+        System.out.println("║  [5] ⚡ Bảo trì ngay (5s countdown)            ║");
+        System.out.println("║  [0] ❌ Thoát                                  ║");
+        System.out.println("╚════════════════════════════════════════════════╝");
+        System.out.print("👉 Nhập lựa chọn: ");
+    }
+    
+    // ========================================================
+    // CHỨC NĂNG 1: BẢO TRÌ 20S
+    // ========================================================
+    private static void startMaintenance20s(Scanner sc) {
+        System.out.println("\n┌─────────────────────────────────────┐");
+        System.out.println("│  ⚠️  XÁC NHẬN BẢO TRÌ 20 GIÂY  ⚠️   │");
+        System.out.println("├─────────────────────────────────────┤");
+        System.out.println("│ • Server sẽ countdown từ 20→1 giây  │");
+        System.out.println("│ • Thông báo gửi cho tất cả player   │");
+        System.out.println("│ • Server tự động tắt sau 20s        │");
+        System.out.println("└─────────────────────────────────────┘");
+        System.out.print("❓ Bạn có chắc chắn? (y/n): ");
+        
+        String confirm = sc.nextLine().trim().toLowerCase();
+        if (confirm.equals("y") || confirm.equals("yes")) {
+            System.out.println("\n✅ Đã kích hoạt bảo trì 20 giây!");
+            System.out.println("⏰ Countdown bắt đầu...\n");
+            Maintenance.gI().startSeconds(20);
+        } else {
+            System.out.println("\n❌ Đã hủy bảo trì!");
+        }
+    }
+    
+    // ========================================================
+    // CHỨC NĂNG 2: ĐÁ ALL PLAYER
+    // ========================================================
+    private static void kickAllPlayers(Scanner sc) {
+        System.out.println("\n┌─────────────────────────────────────┐");
+        System.out.println("│  ⚠️  XÁC NHẬN ĐÁ ALL PLAYER  ⚠️     │");
+        System.out.println("├─────────────────────────────────────┤");
+        System.out.println("│ • Tất cả player bị kick NGAY        │");
+        System.out.println("│ • Server tắt NGAY LẬP TỨC           │");
+        System.out.println("│ • KHÔNG CÓ COUNTDOWN!               │");
+        System.out.println("└─────────────────────────────────────┘");
+        System.out.print("❓ Bạn có chắc chắn? (y/n): ");
+        
+        String confirm = sc.nextLine().trim().toLowerCase();
+        if (confirm.equals("y") || confirm.equals("yes")) {
+            System.out.println("\n✅ Đang kick all players...");
+            System.out.println("⚡ Server sẽ tắt ngay!");
+            Maintenance.gI().startImmediately();
+        } else {
+            System.out.println("\n❌ Đã hủy!");
+        }
+    }
+    
+    // ========================================================
+    // CHỨC NĂNG 3: THAY ĐỔI EXP
+    // ========================================================
+    private static void changeExpRate(Scanner sc) {
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║     ⭐ THAY ĐỔI EXP SERVER ⭐          ║");
+        System.out.println("╠════════════════════════════════════════╣");
+        System.out.println("║  EXP hiện tại: x" + Manager.RATE_EXP_SERVER + "                       ");
+        System.out.println("╠════════════════════════════════════════╣");
+        System.out.println("║  Chọn hệ số EXP mới:                   ║");
+        System.out.println("║                                        ║");
+        System.out.println("║  [1] x1    [2] x2    [3] x5            ║");
+        System.out.println("║  [4] x10   [5] x20   [6] x30           ║");
+        System.out.println("║  [7] x40   [8] x50                     ║");
+        System.out.println("║                                        ║");
+        System.out.println("║  [0] Quay lại                          ║");
+        System.out.println("╚════════════════════════════════════════╝");
+        System.out.print("👉 Nhập lựa chọn: ");
+        
+        String choice = sc.nextLine().trim();
+        int[] expRates = {0, 1, 2, 5, 10, 20, 30, 40, 50};
+        
+        try {
+            int index = Integer.parseInt(choice);
+            if (index == 0) {
+                System.out.println("\n❌ Đã hủy!");
+                return;
+            }
+            
+            if (index >= 1 && index <= 8) {
+                int oldRate = Manager.RATE_EXP_SERVER;
+                int newRate = expRates[index];
+                
+                Manager.RATE_EXP_SERVER = (byte) newRate;
+                
+                System.out.println("\n✅ Đã thay đổi EXP thành công!");
+                System.out.println("📊 Từ: x" + oldRate + " → x" + newRate);
+                System.out.println("⚡ Áp dụng NGAY cho tất cả player!");
+                
+                // Gửi thông báo cho tất cả player
+                nro.models.services.Service.gI().sendThongBaoAllPlayer(
+                    "🎉 THÔNG BÁO 🎉\n"
+                    + "EXP server đã thay đổi!\n"
+                    + "Từ x" + oldRate + " → x" + newRate + "\n"
+                    + "Chúc các bạn luyện cấp vui vẻ!");
+                
+                Logger.log(Logger.YELLOW, 
+                    "[ADMIN] Đã đổi EXP từ x" + oldRate + " → x" + newRate);
+            } else {
+                System.out.println("\n❌ Lựa chọn không hợp lệ!");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("\n❌ Vui lòng nhập số!");
+        }
+    }
+    
+    // ========================================================
+    // CHỨC NĂNG 4: THÔNG TIN SERVER
+    // ========================================================
+    private static void showServerInfo(Scanner sc) {
+        int playerCount = Client.gI().getPlayers().size();
+        
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║       📊 THÔNG TIN SERVER 📊           ║");
+        System.out.println("╠════════════════════════════════════════╣");
+        System.out.println("║  Tên Server: " + NAME + "              ");
+        System.out.println("║  IP: " + IP + "                        ");
+        System.out.println("║  Port: " + PORT + "                         ");
+        System.out.println("║  ─────────────────────────────────     ║");
+        System.out.println("║  Players Online: " + playerCount + "/" + Manager.MAX_PLAYER + "              ");
+        System.out.println("║  Max/IP: " + Manager.MAX_PER_IP + "                         ");
+        System.out.println("║  EXP Rate: x" + Manager.RATE_EXP_SERVER + "                         ");
+        System.out.println("║  ─────────────────────────────────     ║");
+        System.out.println("║  Status: " + (Maintenance.isRunning ? "Đang bảo trì" : "Hoạt động") + "       ");
+        System.out.println("║  Uptime: " + timeStart + "             ");
+        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("\n📌 Nhấn Enter để quay lại menu...");
+        sc.nextLine();
     }
 
 }
