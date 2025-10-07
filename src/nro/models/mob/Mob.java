@@ -244,7 +244,7 @@ public class Mob {
             return 0;
         }
         if (pl.zone.map.mapId == 122 || pl.zone.map.mapId == 123 || pl.zone.map.mapId == 124) {
-            //tiemNang *= 2;
+            tiemNang *= 2; // x2 TNSM cho Ngũ Hành Sơn
         }
         return tiemNang;
     }
