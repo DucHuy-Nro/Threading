@@ -713,6 +713,12 @@ public class ShopService {
             return;
         }
 
+        // Shop Tuyệt Kỹ SGohan - Mua skill 9 trực tiếp (KHÔNG ra item)
+        if (shop.tagName != null && shop.tagName.equals("SHOP_TUYET_KY")) {
+            buySkill9(player, is);
+            return;
+        }
+
         // Hành trang đầy
         if (InventoryService.gI().getCountEmptyBag(player) == 0) {
             Service.gI().sendThongBao(player, "Hành trang đã đầy");
@@ -1293,6 +1299,134 @@ public class ShopService {
             }
         }
         return item;
+    }
+
+    /**
+     * Mua Skill 9 (Tuyệt Kỹ) từ Shop SGohan
+     * Tự động học skill, KHÔNG ra item
+     */
+    private void buySkill9(Player player, ItemShop is) {
+        // ID Đá Ngũ Sắc
+        final short DA_NGU_SAC = 674;
+        
+        // Xác định skill ID và cấp từ item template ID
+        int skillId = getSkill9IdByGender(player.gender);
+        int targetLevel = getSkill9LevelByItemId(is.temp.id, player.gender);
+        
+        if (targetLevel == -1) {
+            Service.gI().sendThongBao(player, "❌ Item không hợp lệ!");
+            return;
+        }
+        
+        // Lấy skill hiện tại
+        Skill currentSkill = SkillUtil.getSkillbyId(player, skillId);
+        int currentLevel = (currentSkill != null && currentSkill.point > 0) ? currentSkill.point : 0;
+        
+        // Check 1: Đã học cấp này chưa?
+        if (currentLevel >= targetLevel) {
+            Service.gI().sendThongBao(player, 
+                "❌ Bạn đã học " + getSkill9NameByGender(player) + " cấp " + targetLevel + " rồi!\n"
+                + "Cấp hiện tại: " + currentLevel);
+            return;
+        }
+        
+        // Check 2: Phải học tuần tự
+        if (targetLevel > currentLevel + 1) {
+            Service.gI().sendThongBao(player, 
+                "❌ Bạn phải học tuần tự!\n"
+                + "Hãy học cấp " + (currentLevel + 1) + " trước.");
+            return;
+        }
+        
+        // Check 3: Đủ đá ngũ sắc?
+        Item daNguSac = InventoryService.gI().findItemBag(player, DA_NGU_SAC);
+        int price = is.cost; // Giá từ shop (đã cấu hình sẵn)
+        
+        if (daNguSac == null || daNguSac.quantity < price) {
+            int missing = price - (daNguSac != null ? daNguSac.quantity : 0);
+            Service.gI().sendThongBao(player, 
+                "❌ Không đủ Đá Ngũ Sắc!\n\n"
+                + "Cần: " + price + " đá\n"
+                + "Có: " + (daNguSac != null ? daNguSac.quantity : 0) + " đá\n"
+                + "Thiếu: " + missing + " đá");
+            return;
+        }
+        
+        // Trừ đá ngũ sắc
+        InventoryService.gI().subQuantityItemsBag(player, daNguSac, price);
+        InventoryService.gI().sendItemBags(player);
+        
+        // Học skill (tự động lên cấp)
+        Skill newSkill = SkillUtil.createSkill(skillId, targetLevel);
+        if (newSkill != null) {
+            SkillUtil.setSkill(player, newSkill);
+            
+            // Thông báo thành công
+            Service.gI().sendThongBao(player, 
+                "✅ HỌC TUYỆT KỸ THÀNH CÔNG!\n\n"
+                + "🌟 " + getSkill9NameByGender(player) + "\n"
+                + "📈 Cấp: " + currentLevel + " → " + targetLevel + "\n"
+                + "💎 Đã trừ: " + price + " Đá Ngũ Sắc\n"
+                + "💰 Còn lại: " + (daNguSac.quantity - price) + " đá\n\n"
+                + "Hãy vào Bảng Kỹ Năng để xem!");
+            
+            Service.gI().point(player);
+        } else {
+            // Hoàn lại đá nếu lỗi
+            InventoryService.gI().subQuantityItemsBag(player, daNguSac, -price);
+            InventoryService.gI().sendItemBags(player);
+            Service.gI().sendThongBao(player, "❌ Có lỗi khi học skill! Đã hoàn lại đá.");
+        }
+    }
+    
+    /**
+     * Lấy Skill ID theo gender
+     */
+    private int getSkill9IdByGender(int gender) {
+        switch (gender) {
+            case 0: return Skill.SUPER_KAME;       // Trái Đất
+            case 1: return Skill.MA_PHONG_BA;      // Namec
+            case 2: return Skill.LIEN_HOAN_CHUONG; // Xayda
+            default: return Skill.SUPER_KAME;
+        }
+    }
+    
+    /**
+     * Lấy tên skill theo gender
+     */
+    private String getSkill9NameByGender(Player player) {
+        switch (player.gender) {
+            case 0: return "Super Kamejoko";
+            case 1: return "Ma Phong Ba";
+            case 2: return "Ca Đíc Liên Hoàn Chưởng";
+            default: return "Tuyệt Kỹ";
+        }
+    }
+    
+    /**
+     * Lấy cấp skill từ Item ID
+     * Item ID mapping:
+     * - Trái Đất: 1044 (cấp 1), 2001-2009 (cấp 2-10)
+     * - Namec: 1211 (cấp 1), 2011-2019 (cấp 2-10)
+     * - Xayda: 1212 (cấp 1), 2021-2029 (cấp 2-10)
+     */
+    private int getSkill9LevelByItemId(int itemId, int gender) {
+        // Trái Đất (gender 0)
+        if (gender == 0) {
+            if (itemId == 1044) return 1;
+            if (itemId >= 2001 && itemId <= 2009) return itemId - 2000; // 2001→1, 2002→2, ..., 2009→9
+        }
+        // Namec (gender 1)
+        else if (gender == 1) {
+            if (itemId == 1211) return 1;
+            if (itemId >= 2011 && itemId <= 2019) return itemId - 2010; // 2011→1, 2012→2, ..., 2019→9
+        }
+        // Xayda (gender 2)
+        else if (gender == 2) {
+            if (itemId == 1212) return 1;
+            if (itemId >= 2021 && itemId <= 2029) return itemId - 2020; // 2021→1, 2022→2, ..., 2029→9
+        }
+        return -1; // Item không hợp lệ
     }
 
 }
