@@ -53,7 +53,7 @@ public class SGohan extends Npc {
                             break;
                             
                         case 2: // Cửa hàng
-                            ShopService.gI().opendShop(player, "BUNMA", true);
+                            ShopService.gI().opendShop(player, "SHOP_TUYET_KY", true);
                             break;
                             
                         case 3: // Đóng

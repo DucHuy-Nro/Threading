@@ -1,0 +1,59 @@
+================================================================================
+HƯỚNG DẪN THÊM VÀO NpcFactory.java
+================================================================================
+
+▶ BƯỚC 1: THÊM IMPORT
+────────────────────────────────────────────────────────────────────────────
+
+Mở file: src/nro/models/npc/NpcFactory.java
+
+Tìm dòng (khoảng dòng 89-95):
+
+    import nro.models.npc_list.Berry;
+    import nro.models.npc_list.ChiChi;
+    import nro.models.npc_list.DrMyuu;
+
+THÊM DÒNG NÀY:
+
+    import nro.models.npc_list.AdminPanel;
+
+KẾT QUẢ:
+
+    import nro.models.npc_list.Berry;
+    import nro.models.npc_list.ChiChi;
+    import nro.models.npc_list.AdminPanel;  // ← THÊM DÒNG NÀY
+    import nro.models.npc_list.DrMyuu;
+
+
+▶ BƯỚC 2: THÊM CASE XỬ LÝ
+────────────────────────────────────────────────────────────────────────────
+
+Tìm dòng (khoảng dòng 236-238):
+
+    case ConstNpc.BERRY ->
+        new Berry(mapId, status, cx, cy, tempId, avatar);
+    default ->
+
+THÊM 2 DÒNG NÀY GIỮA BERRY VÀ DEFAULT:
+
+    case ConstNpc.ADMIN_PANEL ->
+        new AdminPanel(mapId, status, cx, cy, tempId, avatar);
+
+KẾT QUẢ:
+
+    case ConstNpc.BERRY ->
+        new Berry(mapId, status, cx, cy, tempId, avatar);
+    case ConstNpc.ADMIN_PANEL ->                              // ← THÊM
+        new AdminPanel(mapId, status, cx, cy, tempId, avatar); // ← DÒNG NÀY
+    default ->
+        new Npc(mapId, status, cx, cy, tempId, avatar) {
+
+
+▶ LƯU FILE VÀ BUILD!
+────────────────────────────────────────────────────────────────────────────
+
+Sau khi thêm xong → Save file → Build project
+
+================================================================================
+XONG! ✅
+================================================================================
