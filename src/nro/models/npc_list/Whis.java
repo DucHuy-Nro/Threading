@@ -150,13 +150,26 @@ public class Whis extends Npc {
 
         Item sach = InventoryService.gI().findItemBag(player, 1229);
         if (sach == null) {
+            Service.gI().sendThongBao(player, "Bạn không có bí kíp tuyệt kỹ!");
             return;
         }
 
-        if (player.inventory.gold < 10_000_000 || player.inventory.gem < 99 || player.nPoint.power < 60_000_000_000L) {
-            Service.gI().sendThongBao(player, "Bạn không đủ điều kiện học tuyệt kỹ!");
+        // Kiểm tra từng điều kiện riêng để thông báo rõ ràng
+        if (player.inventory.gold < 10_000_000) {
+            Service.gI().sendThongBao(player, "Bạn không đủ vàng! (Cần: 10.000.000)");
             return;
         }
+        
+        if (player.inventory.gem < 99) {
+            Service.gI().sendThongBao(player, "Bạn không đủ ngọc! (Cần: 99)");
+            return;
+        }
+        
+        // Bỏ điều kiện power để dễ học hơn
+        // if (player.nPoint.power < 60_000_000_000L) {
+        //     Service.gI().sendThongBao(player, "Sức mạnh chưa đủ! (Cần: 60 tỷ)");
+        //     return;
+        // }
 
         int skillId = player.gender == 0 ? Skill.SUPER_KAME : (player.gender == 1 ? Skill.MA_PHONG_BA : Skill.LIEN_HOAN_CHUONG);
         int iconSkill = player.gender == 0 ? 11162 : (player.gender == 1 ? 11194 : 11193);
