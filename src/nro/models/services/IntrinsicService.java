@@ -98,7 +98,12 @@ public class IntrinsicService {
 
     private void changeIntrinsic(Player player) {
         List<Intrinsic> listIntrinsic = getIntrinsics(player.gender);
-        player.playerIntrinsic.intrinsic = new Intrinsic(listIntrinsic.get(Util.nextInt(1, listIntrinsic.size() - 1)));
+        
+        // Giới hạn chỉ lấy 11 nội tại đầu tiên (không lặp lại)
+        // Loại bỏ ID 0 (chưa kích hoạt) và chỉ lấy tối đa 11 nội tại
+        int maxIntrinsic = Math.min(11, listIntrinsic.size() - 1);
+        
+        player.playerIntrinsic.intrinsic = new Intrinsic(listIntrinsic.get(Util.nextInt(1, maxIntrinsic)));
         player.playerIntrinsic.intrinsic.param1 = (short) Util.nextInt(player.playerIntrinsic.intrinsic.paramFrom1, player.playerIntrinsic.intrinsic.paramTo1);
         player.playerIntrinsic.intrinsic.param2 = (short) Util.nextInt(player.playerIntrinsic.intrinsic.paramFrom2, player.playerIntrinsic.intrinsic.paramTo2);
         String name = player.playerIntrinsic.intrinsic.getName();
@@ -115,7 +120,11 @@ public class IntrinsicService {
 
     public void doinoitai(Player player) {
         List<Intrinsic> listIntrinsic = getIntrinsics(player.gender);
-        player.playerIntrinsic.intrinsic = new Intrinsic(listIntrinsic.get(Util.nextInt(1, listIntrinsic.size() - 1)));
+        
+        // Giới hạn chỉ lấy 11 nội tại đầu tiên (không lặp lại)
+        int maxIntrinsic = Math.min(11, listIntrinsic.size() - 1);
+        
+        player.playerIntrinsic.intrinsic = new Intrinsic(listIntrinsic.get(Util.nextInt(1, maxIntrinsic)));
         player.playerIntrinsic.intrinsic.param1 = (short) Util.nextInt(player.playerIntrinsic.intrinsic.paramFrom1, player.playerIntrinsic.intrinsic.paramTo1);
         player.playerIntrinsic.intrinsic.param2 = (short) Util.nextInt(player.playerIntrinsic.intrinsic.paramFrom2, player.playerIntrinsic.intrinsic.paramTo2);
         Service.gI().sendThongBao(player, "Bạn nhận được Nội tại:\n" + player.playerIntrinsic.intrinsic.getName().substring(0, player.playerIntrinsic.intrinsic.getName().indexOf(" [")));
