@@ -89,7 +89,7 @@ public class ServerManager {
                 }
             }, "ServerMain").start();
 
-            activeCommandLine();
+            AdminPanelGUI.openAdminPanel();
         } catch (Exception e) {
             Logger.logException(ServerManager.class, e);
         }

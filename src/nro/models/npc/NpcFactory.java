@@ -98,6 +98,10 @@ import static nro.models.services.shenron.SummonDragon.SHENRON_1_STAR_WISHES_2;
 import static nro.models.services.shenron.SummonDragon.SHENRON_SAY;
 import nro.models.services.shenron.SummonDragonNamek;
 import nro.models.shop_ky_gui.ConsignShopService;
+import nro.models.npc_list.SGohan;
+import nro.models.npc_list.NgoKhong;
+import nro.models.npc_list.DuongTang;
+
 
 public class NpcFactory {
 
@@ -235,6 +239,12 @@ public class NpcFactory {
                     new Bardock(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BERRY ->
                     new Berry(mapId, status, cx, cy, tempId, avatar);
+                     case ConstNpc.NGO_KHONG ->
+                    new NgoKhong(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.DUONG_TANG ->
+                    new DuongTang(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.SGOHAN ->
+                    new SGohan(mapId, status, cx, cy, tempId, avatar);
                 default ->
                     new Npc(mapId, status, cx, cy, tempId, avatar) {
                         @Override

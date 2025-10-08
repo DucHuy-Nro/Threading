@@ -1462,6 +1462,17 @@ public class NPoint {
                     percentXDame = 30;
                 }
                 break;
+                // ========== SKILL 9 (TUYỆT KỸ) ==========
+case Skill.SUPER_KAME:              // Super Kamejoko (Trái Đất)
+    percentDameSkill = skillSelect.damage;
+    break;
+case Skill.LIEN_HOAN_CHUONG:        // Ca đíc liên hoàn chưởng (Xayda)
+    percentDameSkill = skillSelect.damage;
+    break;
+case Skill.MA_PHONG_BA:             // Ma Phong Ba (Namec)
+    percentDameSkill = skillSelect.damage;
+    break;
+// ========================================
             case Skill.DICH_CHUYEN_TUC_THOI:
                 isCrit = true;
                 isCritTele = true;

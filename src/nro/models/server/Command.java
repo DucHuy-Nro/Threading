@@ -203,6 +203,17 @@ public class Command {
                 }
             }
         }
+         // Command xem tọa độ (chỉ admin)
+        if (player.isAdmin() && (text.equalsIgnoreCase("vt") || text.equalsIgnoreCase("toado"))) {
+            Service.gI().sendThongBao(player, 
+                "📍 VỊ TRÍ HIỆN TẠI\n"
+                + "━━━━━━━━━━━━━━━━\n"
+                + "🗺️ Map: " + player.zone.map.mapId + " - " + player.zone.map.mapName + "\n"
+                + "🔢 Zone: " + player.zone.zoneId + "\n"
+                + "📐 X: " + player.location.x + "\n"
+                + "📐 Y: " + player.location.y);
+            return true;
+        }
 
         if (text.startsWith("ten con la ")) {
             PetService.gI().changeNamePet(player, text.replace("ten con la ", ""));

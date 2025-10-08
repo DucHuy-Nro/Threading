@@ -8,17 +8,17 @@ import nro.models.services.InventoryService;
 import nro.models.services.ItemService;
 import nro.models.services.PetService;
 import nro.models.services.Service;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.time.Duration;
+//import java.time.LocalDate;
+//import java.time.LocalDateTime;
+//import java.time.Month;
+//import java.time.format.DateTimeFormatter;
+//import java.time.Duration;
 import nro.models.database.PlayerDAO;
 import nro.models.services.PlayerService;
 
 public class ToriBot extends Npc {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     public ToriBot(int mapId, int status, int cx, int cy, int tempId, int avartar) {
         super(mapId, status, cx, cy, tempId, avartar);
@@ -26,43 +26,53 @@ public class ToriBot extends Npc {
 
     @Override
     public void openBaseMenu(Player player) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        int currentYear = LocalDate.now().getYear();
-        LocalDateTime vipSeasonStartDate = LocalDateTime.of(currentYear, Month.AUGUST, 5, 0, 0, 0);
-        LocalDateTime vipSeasonEndDate = LocalDateTime.of(currentYear, Month.AUGUST, 30, 23, 59, 59);
+//        LocalDateTime currentDateTime = LocalDateTime.now();
+//        int currentYear = LocalDate.now().getYear();
+//        LocalDateTime vipSeasonStartDate = LocalDateTime.of(currentYear, Month.AUGUST, 5, 0, 0, 0);
+//        LocalDateTime vipSeasonEndDate = LocalDateTime.of(currentYear, Month.AUGUST, 30, 23, 59, 59);
+//
+//        if (currentDateTime.isAfter(vipSeasonEndDate)) {
+//            this.createOtherMenu(player, 0, "Ngươi tìm ta có việc gì?", "Đóng");
+//        } else {
+//            int currentPurchases = player.vipPurchaseCount;
+//            String vipInfoMessage = "Lưu ý: nâng cấp VIP chỉ được tối đa 4 lần mỗi mùa (Bạn đã mua: " + currentPurchases + "/4 lần)";
+//            String startDateStr = vipSeasonStartDate.format(DATE_TIME_FORMATTER);
+//            String endDateStr = vipSeasonEndDate.format(DATE_TIME_FORMATTER);
+//            Duration remainingDuration = Duration.between(currentDateTime, vipSeasonEndDate);
+//            long days = remainingDuration.toDays();
+//            long hours = remainingDuration.toHours() % 24;
+//            long minutes = remainingDuration.toMinutes() % 60;
+//            long seconds = remainingDuration.getSeconds() % 60;
+//
+//            String remainingTimeString;
+//            if (remainingDuration.isNegative() || remainingDuration.isZero()) {
+//                remainingTimeString = "Mùa VIP sắp kết thúc!";
+//            } else if (days == 0 && hours == 0 && minutes == 0) {
+//                remainingTimeString = "Còn " + seconds + " giây!";
+//            } else if (days == 0 && hours == 0) {
+//                remainingTimeString = "Còn " + minutes + " phút " + seconds + " giây!";
+//            } else if (days == 0) {
+//                remainingTimeString = "Còn " + hours + " giờ " + minutes + " phút " + seconds + " giây!";
+//            } else {
+//                remainingTimeString = "Còn " + days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây!";
+//            }
+//
+//            this.createOtherMenu(player, 0,
+//                    "Trong thời gian mùa VIP diễn ra\n(Từ " + startDateStr + " đến hết " + endDateStr + ")\n"
+//                    + "Thời gian còn lại: " + remainingTimeString + "\n"
+//                    + "Tạo nhân vật mới sẽ được X2 Kinh nghiệm toàn mùa\n Nếu nâng cấp VIP sẽ được nhận\n nhiều ưu đãi hơn nữa.\n" + vipInfoMessage,
+//                    "Vip 1", "Vip 2", "Vip 3", "Vip 4");
+//        }
+// VIP hoạt động quanh năm - không giới hạn thời gian
+        int currentPurchases = player.vipPurchaseCount;
+        String vipInfoMessage = "Lưu ý: nâng cấp VIP chỉ được tối đa 4 lần (Bạn đã mua: " + currentPurchases + "/4 lần)";
 
-        if (currentDateTime.isAfter(vipSeasonEndDate)) {
-            this.createOtherMenu(player, 0, "Ngươi tìm ta có việc gì?", "Đóng");
-        } else {
-            int currentPurchases = player.vipPurchaseCount;
-            String vipInfoMessage = "Lưu ý: nâng cấp VIP chỉ được tối đa 4 lần mỗi mùa (Bạn đã mua: " + currentPurchases + "/4 lần)";
-            String startDateStr = vipSeasonStartDate.format(DATE_TIME_FORMATTER);
-            String endDateStr = vipSeasonEndDate.format(DATE_TIME_FORMATTER);
-            Duration remainingDuration = Duration.between(currentDateTime, vipSeasonEndDate);
-            long days = remainingDuration.toDays();
-            long hours = remainingDuration.toHours() % 24;
-            long minutes = remainingDuration.toMinutes() % 60;
-            long seconds = remainingDuration.getSeconds() % 60;
-
-            String remainingTimeString;
-            if (remainingDuration.isNegative() || remainingDuration.isZero()) {
-                remainingTimeString = "Mùa VIP sắp kết thúc!";
-            } else if (days == 0 && hours == 0 && minutes == 0) {
-                remainingTimeString = "Còn " + seconds + " giây!";
-            } else if (days == 0 && hours == 0) {
-                remainingTimeString = "Còn " + minutes + " phút " + seconds + " giây!";
-            } else if (days == 0) {
-                remainingTimeString = "Còn " + hours + " giờ " + minutes + " phút " + seconds + " giây!";
-            } else {
-                remainingTimeString = "Còn " + days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây!";
-            }
-
-            this.createOtherMenu(player, 0,
-                    "Trong thời gian mùa VIP diễn ra\n(Từ " + startDateStr + " đến hết " + endDateStr + ")\n"
-                    + "Thời gian còn lại: " + remainingTimeString + "\n"
-                    + "Tạo nhân vật mới sẽ được X2 Kinh nghiệm toàn mùa\n Nếu nâng cấp VIP sẽ được nhận\n nhiều ưu đãi hơn nữa.\n" + vipInfoMessage,
-                    "Vip 1", "Vip 2", "Vip 3", "Vip 4");
-        }
+        this.createOtherMenu(player, 0,
+                "🌟 NÂNG CẤP VIP 🌟\n"
+                + "Tạo nhân vật mới sẽ được X3 Kinh nghiệm\n"
+                + "Nếu nâng cấp VIP sẽ được nhận\n"
+                + "nhiều ưu đãi hơn nữa.\n" + vipInfoMessage,
+                "Vip 1", "Vip 2", "Vip 3", "Vip 4");
     }
 
     @Override
@@ -70,15 +80,15 @@ public class ToriBot extends Npc {
         if (!canOpenNpc(pl)) {
             return;
         }
-        int currentYear = LocalDate.now().getYear();
-        LocalDateTime vipSeasonEndDate = LocalDateTime.of(currentYear, Month.AUGUST, 30, 23, 59, 59);
-
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        if (currentDateTime.isAfter(vipSeasonEndDate)) {
-            Service.gI().sendThongBao(pl, "Mùa VIP đã kết thúc. Bạn không thể mua VIP vào lúc này.");
-            openBaseMenu(pl);
-            return;
-        }
+//        int currentYear = LocalDate.now().getYear();
+//        LocalDateTime vipSeasonEndDate = LocalDateTime.of(currentYear, Month.AUGUST, 30, 23, 59, 59);
+//
+//        LocalDateTime currentDateTime = LocalDateTime.now();
+//        if (currentDateTime.isAfter(vipSeasonEndDate)) {
+//            Service.gI().sendThongBao(pl, "Mùa VIP đã kết thúc. Bạn không thể mua VIP vào lúc này.");
+//            openBaseMenu(pl);
+//            return;
+//        }
         switch (pl.idMark.getIndexMenu()) {
             case 0 -> {
                 switch (select) {
@@ -113,18 +123,18 @@ public class ToriBot extends Npc {
     }
 
     private void BuyVip(Player pl, int vipLevel, int cost) {
-        int currentYear = LocalDate.now().getYear();
-        LocalDateTime vipSeasonEndDate = LocalDateTime.of(currentYear, Month.AUGUST,30, 23, 59, 59);
-
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        if (currentDateTime.isAfter(vipSeasonEndDate)) {
-            Service.gI().sendThongBao(pl, "Mùa VIP đã kết thúc. Bạn không thể mua VIP vào lúc này.");
-            openBaseMenu(pl);
-            return;
-        }
+//        int currentYear = LocalDate.now().getYear();
+//        LocalDateTime vipSeasonEndDate = LocalDateTime.of(currentYear, Month.AUGUST,30, 23, 59, 59);
+//
+//        LocalDateTime currentDateTime = LocalDateTime.now();
+//        if (currentDateTime.isAfter(vipSeasonEndDate)) {
+//            Service.gI().sendThongBao(pl, "Mùa VIP đã kết thúc. Bạn không thể mua VIP vào lúc này.");
+//            openBaseMenu(pl);
+//            return;
+//        }
 
         if (pl.vipPurchaseCount >= 4) {
-            Service.gI().sendThongBao(pl, "Bạn đã mua tối đa 4 lượt VIP mùa này rồi!");
+            Service.gI().sendThongBao(pl, "Bạn đã mua tối đa 4 lượt VIP rồi!");
             return;
         }
         if (pl.vip >= vipLevel) {
